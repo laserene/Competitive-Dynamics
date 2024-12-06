@@ -1,3 +1,5 @@
+# Undirected connection will be converted to 2 directed connections
+
 import random
 
 import matplotlib.pyplot as plt
@@ -23,8 +25,7 @@ def import_network(filename):
         data = f.readlines()
 
     count = 0
-    di_net = nx.MultiDiGraph()
-    undi_net = nx.MultiGraph()
+    net = nx.MultiDiGraph()
     for line in data:
         if count == 0:
             count += 1
@@ -33,20 +34,53 @@ def import_network(filename):
         direction = int(direction)
         weight = int(weight)
 
-        if direction == 0:
-            undi_net.add_edge(from_node, to_node, weight=weight)
-        else:
-            di_net.add_edge(from_node, to_node, weight=weight)
+        net.add_edge(from_node, to_node, weight=weight)
 
-    return di_net, undi_net
+        if direction == 0:
+            net.add_edge(to_node, from_node, weight=weight)
+
+    return net
+
+
+def extract_adj_matrix(nodes, edges):
+    n_nodes = len(nodes)
+    neighbors = {}
+
+    # Node dictionary
+    node_dict = {}
+    for i in range(n_nodes):
+        node_dict[nodes[i]] = i
+
+    # Adjacent directed matrix
+    # Set dim to (n_nodes + 1, n_nodes + 1)
+    # to easily handle the outside competitor later
+    adj_matrix = np.zeros((n_nodes + 1, n_nodes + 1))
+
+    # Update
+    for edge in edges:
+        from_node, to_node = edge
+        from_node_idx = node_dict[from_node]
+        to_node_idx = node_dict[to_node]
+        adj_matrix[from_node_idx][to_node_idx] += 1
+
+        if neighbors.get(from_node, 0) == 0:
+            neighbors[from_node] = [to_node]
+            continue
+
+        if to_node not in neighbors[from_node]:
+            neighbors[from_node].append(to_node)
+
+    return adj_matrix, neighbors, node_dict
 
 
 def compete(adj_matrix, neighbors, node_dict, alpha_id, n_edges):
-    # Outside competitor
+    # Init outside competitor
     beta_id = len(node_dict)
     n_nodes = len(node_dict) + 1
-    node_dict["beta"] = beta_id
+    node_dict["Beta"] = beta_id
+    neighbors[beta_id] = []
 
+    # Init node state
     states = {}
     for i in range(n_nodes):
         states[i] = 0
@@ -54,13 +88,18 @@ def compete(adj_matrix, neighbors, node_dict, alpha_id, n_edges):
     states[beta_id] = -1
 
     n_steps = n_nodes * n_edges
-    # Update agent state
+    # Connect Beta to each normal agent
     for node in tqdm(node_dict.keys()):
         node_id = node_dict[node]
         if node_id == alpha_id or node_id == beta_id:
             continue
 
+        if neighbors.get(node, 0) == 0:
+            continue
+
         # Set of V edges
+        neighbors[node].append("Beta")
+        adj_matrix[beta_id][node_id] = 1
         deg_max = np.delete(adj_matrix.sum(-1) - adj_matrix[:, alpha_id], alpha_id, axis=0).max()
         epsilon = 1 / deg_max
 
@@ -94,35 +133,6 @@ def compete(adj_matrix, neighbors, node_dict, alpha_id, n_edges):
     return states
 
 
-def extract_adj_matrix(nodes, edges):
-    n_node = len(nodes)
-    neighbors = {}
-
-    # Node dictionary
-    node_dict = {}
-    for i in range(n_node):
-        node_dict[nodes[i]] = i
-
-    # Adjacent directed matrix
-    adj_matrix = np.zeros((n_node, n_node))
-
-    # Update
-    for edge in edges:
-        from_node, to_node = edge
-        from_node_idx = node_dict[from_node]
-        to_node_idx = node_dict[to_node]
-        adj_matrix[from_node_idx][to_node_idx] += 1
-
-        if neighbors.get(from_node, 0) == 0:
-            neighbors[from_node] = [to_node]
-            continue
-
-        if to_node not in neighbors[from_node]:
-            neighbors[from_node].append(to_node)
-
-    return adj_matrix, neighbors, node_dict, n_node
-
-
 def compute_distance_matrix(adj_matrix, node_dict):
     d = adj_matrix.copy()
     d[(d == 0) & (~np.eye(d.shape[0], dtype=bool))] = INF
@@ -153,19 +163,24 @@ def main():
     # path = "./data/test.txt"
 
     # Network generation
-    di_net, undi_net = import_network(path)
-    di_nodes, di_edges = get_node_edge(di_net)
-    adj_di_matrix, neighbors, di_node_dict, n_di_nodes = extract_adj_matrix(di_nodes, di_edges)
+    net = import_network(path)
+    nodes, edges = get_node_edge(net)
+    adj_matrix, neighbors, node_dict = extract_adj_matrix(nodes, edges)
 
     # Outside competition
-    n_edges = len(di_edges)
-    alpha_id = get_random_competitor(n_di_nodes)
+    n_nodes = len(nodes)
+    n_edges = len(edges)
+    alpha_id = get_random_competitor(n_nodes)
     print("===============COMPETING==============")
-    states = compete(adj_di_matrix, neighbors, di_node_dict, alpha_id, n_edges)
+    states = compete(adj_matrix, neighbors, node_dict, alpha_id, n_edges)
 
-    print(states.values())
+    # print(states.values())
 
-    # distance_matrix = compute_distance_matrix(adj_di_matrix, di_node_dict)
+    for i in states.values():
+        if i < 0:
+            print("no")
+
+    # distance_matrix = compute_distance_matrix(adj_matrix, node_dict)
 
 
 if __name__ == "__main__":
