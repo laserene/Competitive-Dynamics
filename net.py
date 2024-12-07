@@ -159,8 +159,8 @@ def visualize(net1):
 
 
 def main():
-    path = "./data/4-Human cancer signaling - Input.txt"
-    # path = "./data/test.txt"
+    # path = "./data/4-Human cancer signaling - Input.txt"
+    path = "./data/test.txt"
 
     # Network generation
     net = import_network(path)
@@ -174,12 +174,7 @@ def main():
     print("===============COMPETING==============")
     states = compete(adj_matrix, neighbors, node_dict, alpha_id, n_edges)
 
-    # print(states.values())
-
-    for i in states.values():
-        if i < 0:
-            print("no")
-
+    print(states.values())
     # distance_matrix = compute_distance_matrix(adj_matrix, node_dict)
 
 
