@@ -91,11 +91,13 @@ def compete(adj_matrix, neighbors, node_dict, alpha_id, n_edges):
     # Connect Beta to each normal agent
     for node in tqdm(node_dict.keys()):
         node_id = node_dict[node]
+        # Beta cannot connect to Beta and Alpha
         if node_id == alpha_id or node_id == beta_id:
             continue
 
+        # Handle Beta - leaf node case
         if neighbors.get(node, 0) == 0:
-            continue
+            neighbors[node] = []
 
         # Set of V edges
         neighbors[node].append("Beta")
@@ -119,6 +121,7 @@ def compete(adj_matrix, neighbors, node_dict, alpha_id, n_edges):
                     continue
 
                 s = 0
+                # Updating based on neighbors
                 for v in neighbors[u]:
                     v_id = node_dict[v]
                     s = s + adj_matrix[u_id][v_id] * (states[v_id] - states[u_id])
