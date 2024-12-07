@@ -130,10 +130,15 @@ def compete(adj_matrix, neighbors, node_dict, alpha_id, n_edges):
                 states[u_id] = old_u_state + epsilon * s
                 converging = converging + abs(states[u_id] - old_u_state)
 
+            t += 1
+
             if not (converging > epsilon and t < n_steps):
                 break
 
-            t += 1
+        # Remove connection from B
+        adj_matrix[beta_id][node_id] = 0
+        adj_matrix[node_id][beta_id] = 0
+        neighbors[node].remove("Beta")
 
     return states
 
