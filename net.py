@@ -99,13 +99,15 @@ def compete(adj_matrix, neighbors, node_dict, alpha_id, n_edges):
 
         # Set of V edges
         neighbors[node].append("Beta")
+        # Undirected connection turned to 2 directed connections
         adj_matrix[beta_id][node_id] = 1
+        adj_matrix[node_id][beta_id] = 1
         deg_max = np.delete(adj_matrix.sum(-1) - adj_matrix[:, alpha_id], alpha_id, axis=0).max()
         epsilon = 1 / deg_max
 
+        t = 0
         while True:
             converging = 0
-            t = 0
 
             for u in node_dict.keys():
                 u_id = node_dict[u]
