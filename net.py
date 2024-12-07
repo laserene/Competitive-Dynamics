@@ -54,7 +54,7 @@ def extract_adj_matrix(nodes, edges):
     # Adjacent directed matrix
     # Set dim to (n_nodes + 1, n_nodes + 1)
     # to easily handle the outside competitor later
-    adj_matrix = np.zeros((n_nodes + 1, n_nodes + 1))
+    adj_matrix = np.zeros((n_nodes + 1, n_nodes + 1), dtype=int)
 
     # Update
     for edge in edges:
@@ -140,6 +140,8 @@ def compete(adj_matrix, neighbors, node_dict, alpha_id, n_edges):
         adj_matrix[node_id][beta_id] = 0
         neighbors[node].remove("Beta")
 
+    node_dict.pop("Beta")
+
     return states
 
 
@@ -159,6 +161,22 @@ def compute_distance_matrix(adj_matrix, node_dict):
                     d[from_node][to_node] = d[from_node][mid_node] + d[mid_node][to_node]
 
     return d
+
+
+def compute_influence_matrix(states, distance_matrix, node_dict, alpha_id):
+    n_nodes = len(node_dict)
+    influence_matrix = np.array((n_nodes, n_nodes))
+
+    for u in node_dict.keys():
+        for v in node_dict.keys():
+            u_id = node_dict[u]
+            v_id = node_dict[v]
+            if distance_matrix[u_id][v_id] == 0:
+                influence_matrix[u_id][v_id] = "NA"
+            else:
+                influence_matrix[u_id][v_id] = states[v_id] / distance_matrix[u_id][v_id] ^ 2
+
+    return influence_matrix
 
 
 def visualize(net1):
@@ -181,11 +199,10 @@ def main():
     n_nodes = len(nodes)
     n_edges = len(edges)
     alpha_id = get_random_competitor(n_nodes)
-    print("===============COMPETING==============")
     states = compete(adj_matrix, neighbors, node_dict, alpha_id, n_edges)
-
-    print(states.values())
-    # distance_matrix = compute_distance_matrix(adj_matrix, node_dict)
+    distance_matrix = compute_distance_matrix(adj_matrix, node_dict)
+    influence_matrix = compute_influence_matrix(states, distance_matrix, node_dict, alpha_id)
+    print(influence_matrix)
 
 
 if __name__ == "__main__":
