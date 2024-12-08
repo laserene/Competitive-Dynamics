@@ -136,7 +136,6 @@ def compete(adj_matrix, neighbors, node_dict, alpha_id, n_edges):
                 break
 
         # Remove connection from B
-        adj_matrix[beta_id][node_id] = 0
         adj_matrix[node_id][beta_id] = 0
         neighbors[node].remove("Beta")
 
@@ -163,20 +162,40 @@ def compute_distance_matrix(adj_matrix, node_dict):
     return d
 
 
-def compute_influence_matrix(states, distance_matrix, node_dict, alpha_id):
+def compute_influence_matrix(states, distance_matrix, node_dict):
     n_nodes = len(node_dict)
-    influence_matrix = np.array((n_nodes, n_nodes))
+    influence_matrix = np.zeros((n_nodes, n_nodes))
 
     for u in node_dict.keys():
         for v in node_dict.keys():
             u_id = node_dict[u]
             v_id = node_dict[v]
             if distance_matrix[u_id][v_id] == 0:
-                influence_matrix[u_id][v_id] = "NA"
+                influence_matrix[u_id][v_id] = -1
             else:
-                influence_matrix[u_id][v_id] = states[v_id] / distance_matrix[u_id][v_id] ^ 2
+                influence_matrix[u_id][v_id] = states[v_id] / (distance_matrix[u_id][v_id] ** 2)
 
     return influence_matrix
+
+
+def compute_total_support(influence_matrix, node_dict, states, alpha_id):
+    def sign(value):
+        if value > 0:
+            return 1
+        elif value == 0:
+            return 0
+        else:
+            return -1
+
+    support = 0
+    for node in node_dict.keys():
+        node_id = node_dict[node]
+        if node_id == alpha_id:
+            continue
+
+        support += sign(influence_matrix[alpha_id][node_id] - states[node_id])
+
+    return support
 
 
 def visualize(net1):
@@ -199,10 +218,11 @@ def main():
     n_nodes = len(nodes)
     n_edges = len(edges)
     alpha_id = get_random_competitor(n_nodes)
-    states = compete(adj_matrix, neighbors, node_dict, alpha_id, n_edges)
     distance_matrix = compute_distance_matrix(adj_matrix, node_dict)
-    influence_matrix = compute_influence_matrix(states, distance_matrix, node_dict, alpha_id)
-    print(influence_matrix)
+    states = compete(adj_matrix, neighbors, node_dict, alpha_id, n_edges)
+    influence_matrix = compute_influence_matrix(states, distance_matrix, node_dict)
+    total_support = compute_total_support(influence_matrix, node_dict, states, alpha_id)
+    print(total_support)
 
 
 if __name__ == "__main__":
