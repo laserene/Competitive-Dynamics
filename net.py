@@ -206,8 +206,8 @@ def visualize(net1):
 
 
 def main():
-    # path = "./data/4-Human cancer signaling - Input.txt"
-    path = "./data/test.txt"
+    path = "./data/4-Human cancer signaling - Input.txt"
+    # path = "./data/test.txt"
 
     # Network generation
     net = import_network(path)
