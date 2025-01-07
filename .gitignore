@@ -5,5 +5,5 @@ data/
 total_support/
 large_dataset/
 results/
-cancerGeneList.csv
 compare.py
+OncoKB_geneList.csv
