@@ -86,6 +86,7 @@ def compute_distance_matrix(dataset, adj_matrix, node_dict):
                 if d[from_node][to_node] > candidate:
                     d[from_node][to_node] = candidate
 
+    os.makedirs("distance_matrix", exist_ok=True)
     np.savetxt(f"distance_matrix/{dataset}_distance_matrix.csv", d, delimiter=",", fmt='%d')
 
     return d
@@ -239,6 +240,7 @@ def main():
             support = compute_total_support(alpha_id, influence_matrix, node_dict, state)
             total_supports[alpha_id] = support
 
+        os.makedirs("total_support", exist_ok=True)
         with open(f"total_support/{dataset}_total_supports.csv", "w") as f:
             id_to_node = {v: k for k, v in node_dict.items()}
             f.write("Node_ID, Node, Total Support\n")
