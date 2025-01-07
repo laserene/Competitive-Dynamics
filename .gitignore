@@ -5,3 +5,5 @@ data/
 total_support/
 large_dataset/
 results/
+cancerGeneList.csv/
+cancerGeneList.txt/
