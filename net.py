@@ -81,9 +81,7 @@ def compute_distance_matrix(dataset, weight_matrix, node_dict):
     d[(d == 0) & (~np.eye(d.shape[0], dtype=bool))] = INF
 
     # Floyd-Warshall algorithm for distance matrix D calculation
-    loop_obj = tqdm(node_dict.keys())
-    for k in loop_obj:
-        loop_obj.set_description("Computing distance matrix")
+    for k in node_dict.keys():
         for u in node_dict.keys():
             for v in node_dict.keys():
                 from_node = node_dict[u]
@@ -200,39 +198,32 @@ def compute_total_support(alpha_id, influence_matrix, node_dict, state):
 
 
 def main():
-    # node_dict, neighbors, edges = import_network("./data/test.txt")
-    node_dict, neighbors, edges = import_network("./data/Acute myeloid leukemia.txt")
-    weight_matrix = extract_weight_matrix(node_dict, edges)
-    distance_matrix = compute_distance_matrix("test", weight_matrix, node_dict)
-    n_edges = len(edges)
-    with ProcessPoolExecutor() as executor:
-        states = list(tqdm(executor.map(
-            partial(compete, weight_matrix=weight_matrix,
-                    node_dict=node_dict, neighbors=neighbors,
-                    n_edges=n_edges),
-            node_dict.keys())))
+    datasets = os.listdir("./data")
+    data_objects = [(os.path.join("./data", dataset), dataset.split(".txt")[0].strip()) for dataset in datasets]
+    for path, dataset in tqdm(data_objects):
+        node_dict, neighbors, edges = import_network(path)
+        weight_matrix = extract_weight_matrix(node_dict, edges)
+        distance_matrix = compute_distance_matrix("test", weight_matrix, node_dict)
+        n_edges = len(edges)
+        with ProcessPoolExecutor() as executor:
+            states = list(executor.map(
+                partial(compete, weight_matrix=weight_matrix,
+                        node_dict=node_dict, neighbors=neighbors,
+                        n_edges=n_edges),
+                node_dict.keys()))
 
-    total_supports = {}
-    for alpha_id, state in states:
-        influence_matrix = compute_influence_matrix(state, distance_matrix, node_dict)
-        support = compute_total_support(alpha_id, influence_matrix, node_dict, state)
-        total_supports[alpha_id] = support
+        total_supports = {}
+        for alpha_id, state in states:
+            influence_matrix = compute_influence_matrix(state, distance_matrix, node_dict)
+            support = compute_total_support(alpha_id, influence_matrix, node_dict, state)
+            total_supports[alpha_id] = support
 
-    os.makedirs("total_support", exist_ok=True)
-    with open(f"total_support/test_total_supports.csv", "w") as f:
-        id_to_node = {v: k for k, v in node_dict.items()}
-        f.write("Node_ID, Node, Total Support\n")
-        for node, support in total_supports.items():
-            f.write(f"{node}, {id_to_node[node]}, {support}\n")
-
-    print(states)
-
-    # datasets = os.listdir("./data")
-    # for dataset in tqdm(datasets):
-    #     node_dict, neighbors = import_network("./data/" + dataset)
-    #     extract_weight_matrix(node_dict, neighbors)
-
-    # print(node_dict)
+        os.makedirs("total_support", exist_ok=True)
+        with open(f"total_support/test_total_supports.csv", "w") as f:
+            id_to_node = {v: k for k, v in node_dict.items()}
+            f.write("Node_ID, Node, Total Support\n")
+            for node, support in total_supports.items():
+                f.write(f"{node}, {id_to_node[node]}, {support}\n")
 
 
 if __name__ == "__main__":
