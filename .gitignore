@@ -1,8 +1,5 @@
 .idea/
 __pycache__/
 distance_matrix/
-data/
 total_support/
-large_dataset/
-results/
 OncoKB_geneList.csv
