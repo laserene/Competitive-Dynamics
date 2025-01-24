@@ -1,0 +1,11 @@
+Endometrial cancer
+, 1950 9
+, \textbf{EGFR} 17
+, 2885 26
+, \textbf{SOS1} 30
+, 6655 30
+, \textbf{GSK3B} 31
+, \textbf{KRAS} 32
+, 10297 33
+, \textbf{APC} 33
+, \textbf{TP53} 34

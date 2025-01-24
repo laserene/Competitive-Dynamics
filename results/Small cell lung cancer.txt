@@ -1,0 +1,11 @@
+Small cell lung cancer
+, 3685 34
+, 3674 34
+, 3655 34
+, 3673 34
+, 3675 34
+, \textbf{AKT3} 38
+, \textbf{AKT2} 38
+, \textbf{AKT1} 38
+, 5747 39
+, 2335 47

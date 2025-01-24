@@ -1,0 +1,11 @@
+Renal cell carcinoma
+, \textbf{HGF} 14
+, \textbf{MET} 16
+, 112399 29
+, 112398 29
+, 54583 29
+, \textbf{GAB1} 31
+, \textbf{HIF1A} 32
+, \textbf{CREBBP} 32
+, \textbf{EPAS1} 32
+, 9915 32
