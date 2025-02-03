@@ -1,11 +1,11 @@
 Chronic myeloid leukemia
-, \textbf{CBL} 15
-, 2885 16
-, \textbf{GAB2} 18
-, \textbf{PIK3R3} 22
-, \textbf{PIK3R2} 22
-, \textbf{PIK3CD} 22
-, \textbf{PIK3CA} 22
-, \textbf{PIK3CB} 22
-, \textbf{PIK3R1} 22
-, \textbf{BCR} 22
+\textbf{CBL} 15
+2885 16
+\textbf{GAB2} 18
+\textbf{PIK3R3} 22
+\textbf{PIK3R2} 22
+\textbf{PIK3CD} 22
+\textbf{PIK3CA} 22
+\textbf{PIK3CB} 22
+\textbf{PIK3R1} 22
+\textbf{BCR} 22

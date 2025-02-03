@@ -20,17 +20,17 @@ def main():
             gene_id = gene.split("hsa:")[1]
             oncokb_gene = db[db["Entrez Gene ID"] == int(gene_id)]
             if oncokb_gene.empty:
-                results.append(gene_id)
+                results.append(f"{gene_id} {data[data.iloc[:, 1] == gene].iloc[:, 2].values.tolist()[0]}\n")
             else:
                 gene_name = oncokb_gene["Hugo Symbol"].values[0]
-                results.append(f"\\textbf{{{gene_name}}}")
+                results.append(f"\\textbf{{{gene_name}}} {data[data.iloc[:, 1] == gene].iloc[:, 2].values.tolist()[0]}\n")
 
         # Write to file
         filename = file.split(".")[0].split("_total_support")[0]
         results.insert(0, f"{filename}\n")
         os.makedirs("results", exist_ok=True)
         with open(f"./results/{filename}.txt", "w") as f:
-            f.writelines(", ".join(results))
+            f.writelines("".join(results))
 
 
 if __name__ == "__main__":
