@@ -19,3 +19,11 @@ def visualize(net):
     nx.draw(net, with_labels=True, node_color='lightblue', node_size=800, font_size=10, font_weight='bold',
             arrows=True)
     plt.show()
+
+
+def convert_id_to_genename(node_dict):
+    gene_dict = {}
+    for gene in node_dict:
+        gene_dict[node_dict[gene]] = gene
+
+    return gene_dict
