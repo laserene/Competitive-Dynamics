@@ -27,3 +27,7 @@ def convert_id_to_genename(node_dict):
         gene_dict[node_dict[gene]] = gene
 
     return gene_dict
+
+
+def sign(x):
+    return 1 if x >= 0 else -1
