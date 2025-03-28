@@ -5,23 +5,8 @@ import numpy as np
 INF = 10000
 
 
-def extract_weight_matrix(node_dict, edges):
-    n = len(node_dict)
-    weight_matrix = np.zeros((n, n))
-
-    for from_id, to_id, direction, weight in edges:
-        if weight_matrix[from_id][to_id] == 0:
-            weight_matrix[from_id][to_id] = weight
-        else:
-            weight_matrix[from_id][to_id] = min(weight_matrix[from_id][to_id], weight)
-
-        if direction == 0:
-            if weight_matrix[to_id][from_id] == 0:
-                weight_matrix[to_id][from_id] = weight
-            else:
-                weight_matrix[to_id][from_id] = min(weight_matrix[to_id][from_id], weight)
-
-    return weight_matrix
+def compute_adj_matrix(network):
+    pass
 
 
 def compute_distance_matrix(dataset, weight_matrix, node_dict):
