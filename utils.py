@@ -10,4 +10,3 @@ def sign(x):
 
 def get_random_competitor(n_nodes):
     return random.randint(0, n_nodes - 1)
-
