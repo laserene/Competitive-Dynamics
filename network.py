@@ -1,38 +1,27 @@
-def import_network(filename):
+from networkx import MultiGraph
+
+
+def import_network_from_file(filename):
     with open(filename, "r") as f:
         data = f.readlines()
 
-    node_dict = {}
-    neighbors = {}
-    edges = []
-
-    node_id = 0
+    network = MultiGraph()
     for line in data[1:]:
-        from_node, to_node, direction, weight = line.strip().split("\t")
-        direction = int(direction)
-        weight = int(weight)
+        from_node, to_node, _, _ = line.strip().split("\t")
+        # direction = int(direction)
+        # weight = int(weight)
 
-        if node_dict.get(from_node) is None:
-            node_dict[from_node] = node_id
-            node_id += 1
+        network.add_edge(from_node, to_node)
 
-        if node_dict.get(to_node) is None:
-            node_dict[to_node] = node_id
-            node_id += 1
+    return network
 
-        from_id = node_dict[from_node]
-        to_id = node_dict[to_node]
 
-        if neighbors.get(from_id) is None:
-            neighbors[from_id] = []
+def is_undirected_graph(filename):
+    with open(filename, "r") as f:
+        data = f.readlines()
 
-        if neighbors.get(to_id) is None:
-            neighbors[to_id] = []
-
-        neighbors[to_id].append((from_id, weight))
-        if direction == 0:
-            neighbors[from_id].append((to_id, weight))
-
-        edges.append((from_id, to_id, direction, weight))
-
-    return node_dict, neighbors, edges
+    for line in data[1:]:
+        _, _, direction, _ = line.strip().split("\t")
+        if direction == '1':
+            return False
+    return True
