@@ -1,16 +1,14 @@
-import networkx as nx
-import numpy as np
-from scipy.sparse.linalg import eigs
-
-from network import import_network_from_file, is_undirected_graph
-from modularity import *
-from helper import visualize
+from network import import_network_from_file
+from outside_competition import outside_competition
 
 
-# Example: Zachary’s Karate Club graph
-G = import_network_from_file("./data/4-Human PPI network - Input.txt")
-comm1, comm2 = spectral_partitioning(G)
+def main():
+    # dataset = 'Human PPI network'
+    filepath = './data/4-Human PPI network - Input.txt'
+    gene_score_path = './resource/differentially_expressed_genes/TCGA-BRCA_de_genes.tsv'
+    network = import_network_from_file(filepath)
+    outside_competition(network, gene_score_path)
 
-# Visualize
-# visualize_communities(G, comm1, comm2)
-visualize(G)
+
+if __name__ == '__main__':
+    main()
