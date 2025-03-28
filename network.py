@@ -1,21 +1,26 @@
+import subprocess
+
 from networkx import MultiGraph
-from biomart import BiomartServer
 
 
-def import_network_from_file(filename):
-    with open(filename, "r") as f:
+def import_network_from_file(filepath):
+    with open(filepath, "r") as f:
         data = f.readlines()
 
     network = MultiGraph()
     for line in data[1:]:
-        from_node, to_node, direction, weight = line.strip().split("\t")
-        direction = int(direction)
-        weight = int(weight)
+        from_node, to_node, _, _ = line.strip().split("\t")
+
+        # Filter non-existing gene
+        if from_node == '(null)' or to_node == '(null)':
+            continue
+
         network.add_edge(from_node, to_node)
 
     # Assign unique IDs (e.g., integer IDs)
     for i, node in enumerate(network.nodes()):
         network.nodes[node]["id"] = i  # Assign an integer ID
+        network.nodes[node]["score"] = 0
 
     return network
 
@@ -31,15 +36,8 @@ def is_undirected_graph(filename):
     return True
 
 
-def load_network_weight(path):
-    pass
-
-
 def convert_ensembl_gene_id_to_symbol(ensembl_gene_id):
-    server = BiomartServer("http://www.ensembl.org/biomart")
-    mart = server.datasets["hsapiens_gene_ensembl"]
-    result = mart.search({
-        'filters': {'ensembl_gene_id': ["ENSG00000169242"]},
-        'attributes': ["ensembl_gene_id", "external_gene_name"]
-    })
-    return result.text
+    filepath = 'hsapiens_gene_ensembl__gene__main.txt'
+    result = subprocess.run(f"bash -c \"cat {filepath} | cut -f7,8 | grep {ensembl_gene_id}\"", shell=True,
+                            capture_output=True, text=True)
+    return result.stdout.split('\t')[1].strip()
