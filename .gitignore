@@ -1,5 +1,6 @@
 .idea/
 __pycache__/
-distance_matrix/
+resource/*.tsv
 total_support/
 OncoKB_geneList.csv
+preprocessing.py
