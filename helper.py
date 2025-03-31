@@ -1,11 +1,5 @@
 import matplotlib.pyplot as plt
 import networkx as nx
-import numpy as np
-
-
-def load_distance_matrix_from_csv(file_path):
-    d = np.loadtxt(file_path, delimiter=",", dtype=int)
-    return d
 
 
 def visualize(network):
@@ -23,4 +17,3 @@ def convert_id_to_genename(node_dict):
         gene_dict[node_dict[gene]] = gene
 
     return gene_dict
-
