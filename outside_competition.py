@@ -8,6 +8,7 @@ INF = 10000
 
 
 def compute_distance_matrix(dataset, network):
+    print('Computing distance matrix...')
     adjacent_matrix = nx.adjacency_matrix(network)
     distance_matrix = adjacent_matrix.copy().todense().astype(np.uint16)
     distance_matrix[(distance_matrix == 0) & (np.eye(distance_matrix.shape[0]) == 0)] = INF
@@ -69,8 +70,5 @@ def compute_total_support(alpha_id, influence_matrix, node_dict, state):
     return support
 
 
-def outside_competition(network, gene_score_path, co_expression_path):
-    # distance_matrix = load_distance_matrix_from_file('./distance_matrix/Human PPI network_distance_matrix.csv')
-    network = load_gene_weight_from_file(network, gene_score_path)
-    co_expression = load_co_expression(co_expression_path)
-    
+def outside_competition(network, distance_matrix, co_expression):
+    pass

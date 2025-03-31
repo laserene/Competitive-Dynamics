@@ -1,5 +1,6 @@
 from network import import_network_from_file
-from outside_competition import load_distance_matrix_from_file
+from outside_competition import outside_competition, load_distance_matrix_from_file
+
 
 def main():
     # dataset = 'Human PPI network'
@@ -10,8 +11,7 @@ def main():
 
     network, co_expression = import_network_from_file(filepath, gene_score_path, co_expression_path)
     distance_matrix = load_distance_matrix_from_file(distance_matrix_path)
-    pass
-    # outside_competition(network, gene_score_path, co_expression_path)
+    states = outside_competition(network, distance_matrix, co_expression)
 
 
 if __name__ == '__main__':
