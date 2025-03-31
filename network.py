@@ -34,10 +34,3 @@ def is_undirected_graph(filename):
         if direction == '1':
             return False
     return True
-
-
-def convert_ensembl_gene_id_to_symbol(ensembl_gene_id):
-    filepath = 'hsapiens_gene_ensembl__gene__main.txt'
-    result = subprocess.run(f"bash -c \"cat {filepath} | cut -f7,8 | grep {ensembl_gene_id}\"", shell=True,
-                            capture_output=True, text=True)
-    return result.stdout.split('\t')[1].strip()
