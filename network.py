@@ -1,9 +1,28 @@
-import subprocess
+import json
 
 from networkx import MultiGraph
 
 
-def import_network_from_file(filepath):
+def load_gene_weight_from_file(network, filepath):
+    with open(filepath, 'r') as f:
+        d = json.load(f)
+
+    for gene, weight in d.items():
+        if gene in network.nodes:
+            network.nodes[gene]['score'] = float(weight)
+
+    return network
+
+
+def load_co_expression(filepath):
+    with open(filepath, 'r') as f:
+        co_expression = json.load(f)
+
+    return co_expression
+
+
+def import_network_from_file(filepath, gene_score_path, co_expression_path):
+    print("Loading network...")
     with open(filepath, "r") as f:
         data = f.readlines()
 
@@ -22,7 +41,11 @@ def import_network_from_file(filepath):
         network.nodes[node]["id"] = i  # Assign an integer ID
         network.nodes[node]["score"] = 0
 
-    return network
+    # Load gene weight
+    network = load_gene_weight_from_file(network, gene_score_path)
+    co_expression = load_co_expression(co_expression_path)
+
+    return network, co_expression
 
 
 def is_undirected_graph(filename):
