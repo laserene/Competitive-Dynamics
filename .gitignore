@@ -1,5 +1,6 @@
 .idea/
 __pycache__/
 distance_matrix/
-total_support/
+resource/*.tsv
 OncoKB_geneList.csv
+total_support/
