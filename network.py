@@ -1,6 +1,6 @@
 import json
 
-from networkx import MultiGraph
+from networkx import Graph
 
 
 def load_gene_weight_from_file(network, filepath):
@@ -26,7 +26,7 @@ def import_network_from_file(filepath, gene_score_path, co_expression_path):
     with open(filepath, "r") as f:
         data = f.readlines()
 
-    network = MultiGraph()
+    network = Graph()
     for line in data[1:]:
         from_node, to_node, _, _ = line.strip().split("\t")
 
@@ -39,7 +39,7 @@ def import_network_from_file(filepath, gene_score_path, co_expression_path):
     # Assign unique IDs (e.g., integer IDs)
     for i, node in enumerate(network.nodes()):
         network.nodes[node]["id"] = i  # Assign an integer ID
-        network.nodes[node]["score"] = 0
+        network.nodes[node]["score"] = 0.0
 
     # Load gene weight
     network = load_gene_weight_from_file(network, gene_score_path)
