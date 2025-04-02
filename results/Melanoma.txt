@@ -1,0 +1,26 @@
+Melanoma
+1950 -8
+\textbf{FGF1} -8
+\textbf{FGF2} -8
+\textbf{FGF3} -8
+\textbf{FGF4} -8
+\textbf{FGF5} -8
+\textbf{FGF6} -8
+\textbf{FGF7} -8
+\textbf{FGF8} -8
+\textbf{FGF9} -8
+\textbf{FGF10} -8
+26281 -8
+26291 -8
+27006 -8
+\textbf{HGF} -8
+\textbf{IGF1} -8
+5154 -8
+\textbf{PDGFB} -8
+56034 -8
+80310 -8
+\textbf{FGF23} -8
+8817 -8
+8822 -8
+8823 -8
+\textbf{FGF19} -8

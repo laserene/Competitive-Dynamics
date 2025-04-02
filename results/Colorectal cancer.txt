@@ -1,0 +1,11 @@
+Colorectal cancer
+\textbf{EGFR} -24
+2885 27
+\textbf{KRAS} 32
+\textbf{SOS1} 37
+6655 37
+\textbf{GSK3B} 57
+\textbf{RALGDS} 57
+\textbf{CTNNB1} 59
+5899 62
+5898 62

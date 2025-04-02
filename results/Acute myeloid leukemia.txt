@@ -1,0 +1,11 @@
+Acute myeloid leukemia
+\textbf{KIT} 31
+2885 31
+6655 35
+\textbf{SOS1} 35
+\textbf{NRAS} 37
+\textbf{KRAS} 37
+\textbf{FLT3} 39
+\textbf{AKT3} 43
+\textbf{AKT2} 43
+\textbf{AKT1} 43

@@ -3,4 +3,4 @@ __pycache__/
 distance_matrix/
 resource/*.tsv
 OncoKB_geneList.csv
-preprocessing.py
+total_support/

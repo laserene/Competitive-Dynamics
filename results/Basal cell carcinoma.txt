@@ -1,0 +1,11 @@
+Basal cell carcinoma
+\textbf{SMO} -33
+\textbf{SUFU} -32
+\textbf{GLI1} -4
+2736 -4
+2737 -4
+7479 30
+7478 30
+7477 30
+7472 30
+7471 30
