@@ -56,7 +56,7 @@ def compete(alpha, network, co_expression, node_set, max_deg):
 
     state = retrieve_initial_state(network)
 
-    for y in tqdm(node_set):
+    for y in node_set:
         # Initially, set of nodes doesn't contain beta
         if y == alpha:
             continue
@@ -145,9 +145,9 @@ def outside_competition(network, distance_matrix, co_expression):
     print("Competition in progress...")
     node_set = list(network.nodes)
     max_deg = get_max_deg(network)
-    candidates = node_set[:1000]
+    candidates = node_set[1000:1300]
 
-    with ProcessPoolExecutor() as executor:
+    with ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
         states = list(tqdm(executor.map(
             partial(compete, network=network, co_expression=co_expression,
                     node_set=node_set, max_deg=max_deg),
