@@ -141,11 +141,11 @@ def compute_total_support(alpha_id, influence_matrix, node_dict, state):
     return support
 
 
-def outside_competition(network, distance_matrix, co_expression):
+def outside_competition(network, co_expression, start, end):
     print("Competition in progress...")
     node_set = list(network.nodes)
     max_deg = get_max_deg(network)
-    candidates = node_set[1000:1300]
+    candidates = node_set[start:end]
 
     with ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
         states = list(tqdm(executor.map(
