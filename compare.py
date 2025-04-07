@@ -11,7 +11,7 @@ def main():
         max_support = data.iloc[:, 2].min()
         genes = data[data.iloc[:, 2] == max_support].iloc[:, 1].values.tolist()
 
-        # Get the top 10 genes if there are less than 10 genes with the same support
+        # Get the top 10 genes if there are less than 10 genes with the same states
         if len(genes) < 10:
             genes = data.sort_values(by=data.columns[2], ascending=True).iloc[:10, 1].values.tolist()
         results = []

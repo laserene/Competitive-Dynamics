@@ -101,46 +101,6 @@ def compete(alpha, network, co_expression, node_set, max_deg):
     return state
 
 
-def compute_influence_matrix(states, distance_matrix, node_dict):
-    """
-        Deprecated method
-    """
-    n_nodes = len(node_dict)
-    influence_matrix = np.zeros((n_nodes, n_nodes))
-
-    for u in node_dict.keys():
-        for v in node_dict.keys():
-            u_id = node_dict[u]
-            v_id = node_dict[v]
-            if distance_matrix[u_id][v_id] != 0:
-                influence_matrix[u_id][v_id] = states[v_id] / (distance_matrix[u_id][v_id] ** 2)
-
-    return influence_matrix
-
-
-def compute_total_support(alpha_id, influence_matrix, node_dict, state):
-    """
-        Deprecated method
-    """
-    def sign(value):
-        if value > 0:
-            return 1
-        elif value == 0:
-            return 0
-        else:
-            return -1
-
-    support = 0
-    for node in node_dict.keys():
-        node_id = node_dict[node]
-        if node_id == alpha_id:
-            continue
-
-        support += sign(influence_matrix[alpha_id][node_id] - state[node_id])
-
-    return support
-
-
 def outside_competition(network, co_expression, start, end):
     print("Competition in progress...")
     node_set = list(network.nodes)
