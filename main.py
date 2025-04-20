@@ -1,5 +1,6 @@
 from network import import_network_from_file
 from pipeline import pipeline
+from modularity import *
 
 
 def main():
@@ -8,7 +9,6 @@ def main():
     co_expression_path = './resource/co_exp_network/TCGA-BRCA__co_expression__t_70_.json'
 
     network, co_expression = import_network_from_file(filepath, gene_score_path, co_expression_path)
-    print(len(network.nodes))
     pipeline(network)
 
     # os.makedirs("states", exist_ok=True)
