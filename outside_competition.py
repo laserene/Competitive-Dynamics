@@ -1,3 +1,4 @@
+import json
 import os
 from concurrent.futures import ProcessPoolExecutor
 from functools import partial
@@ -25,7 +26,7 @@ def get_max_deg(network):
 
 
 def compute_distance_matrix(dataset, network):
-    print('Computing distance matrix...')
+    print('IN PROGRESS: Computing distance matrix...')
     adjacent_matrix = nx.adjacency_matrix(network)
     distance_matrix = adjacent_matrix.copy().todense().astype(np.uint16)
     distance_matrix[(distance_matrix == 0) & (np.eye(distance_matrix.shape[0]) == 0)] = INF
@@ -36,16 +37,25 @@ def compute_distance_matrix(dataset, network):
         distance_matrix = np.minimum(distance_matrix,
                                      distance_matrix[:, mid_node_id][:, np.newaxis] + distance_matrix[mid_node_id, :])
 
-    os.makedirs("distance_matrix", exist_ok=True)
-    np.savetxt(f"distance_matrix/{dataset}_distance_matrix.csv", distance_matrix, delimiter=",", fmt='%d')
-
     return distance_matrix
 
 
 def load_distance_matrix_from_file(filepath):
-    print("Loading distance matrix...")
+    print("IN PROGRESS: Loading distance matrix...")
     distance_matrix = np.loadtxt(filepath, delimiter=",", dtype=np.uint16)
     return distance_matrix
+
+
+def load_states_from_file(filepath):
+    """
+        Load pre-computed states.
+    :param filepath:
+    :return:
+    """
+    print("IN PROGRESS: Loading state...")
+    with open(filepath, 'r') as f:
+        state = json.load(f)
+    return state
 
 
 def compete(alpha, network, co_expression, node_set, max_deg):
@@ -101,11 +111,15 @@ def compete(alpha, network, co_expression, node_set, max_deg):
     return state
 
 
-def outside_competition(network, co_expression, start, end):
-    print("Competition in progress...")
+def outside_competition(network, co_expression, run_full=True, start=0, end=0):
+    print("IN PROGRESS: Competition in progress...")
     node_set = list(network.nodes)
     max_deg = get_max_deg(network)
-    candidates = node_set[start:end]
+
+    if run_full:
+        candidates = node_set
+    else:
+        candidates = node_set[start:end]
 
     with ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
         states = list(tqdm(executor.map(

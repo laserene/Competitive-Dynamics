@@ -22,7 +22,7 @@ def load_co_expression(filepath):
 
 
 def import_network_from_file(filepath, gene_score_path, co_expression_path):
-    print("Loading network...")
+    print("IN PROGRESS: Loading network...")
     with open(filepath, "r") as f:
         data = f.readlines()
 

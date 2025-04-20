@@ -1,5 +1,15 @@
+import csv
+
 import matplotlib.pyplot as plt
 import networkx as nx
+
+
+def save_dict_as_csv(filepath, data, key='Node', value='Supports'):
+    with open(filepath, mode="w", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow([key, value])  # Header
+        for key, value in data.items():
+            writer.writerow([key, value])
 
 
 def visualize(network):

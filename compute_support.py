@@ -1,5 +1,3 @@
-import json
-
 import numpy as np
 from tqdm import tqdm
 
@@ -9,7 +7,6 @@ def compute_influence_matrix(network, state, distance_matrix):
     influence_matrix = np.zeros((n_nodes, n_nodes))
     node_set = list(network.nodes)
 
-    print('Computing influence matrix...')
     for u in node_set:
         for v in node_set:
             u_id = network.nodes[u]['id']
@@ -29,7 +26,7 @@ def compute_total_support(network, states, distance_matrix):
         else:
             return -1
 
-    print('Computing support...')
+    print('IN PROGRESS: Computing supports...')
 
     node_set = list(network.nodes)
 
@@ -49,9 +46,5 @@ def compute_total_support(network, states, distance_matrix):
             support += sign(influence_matrix[alpha_id][node_id] - state[node])
 
         supports[alpha] = support
-
-    total_support_path = './support/support.json'
-    with open(total_support_path, 'w') as f:
-        json.dump(supports, f)
 
     return supports
