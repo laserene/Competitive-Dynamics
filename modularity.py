@@ -36,14 +36,14 @@ def visualize_communities(G, comm1, comm2):
     pos = nx.spring_layout(G, seed=42)  # Layout for positioning nodes
 
     plt.figure(figsize=(8, 6))
-    nx.draw(G, pos, node_color='gray', edge_color='lightgray', node_size=300, alpha=0.5)
+    nx.draw(G, pos, node_color='gray', edge_color='lightgray', node_size=100, alpha=0.5)
 
     # Draw communities in different colors
     nx.draw_networkx_nodes(G, pos, nodelist=comm1, node_color='blue', label='Community 1')
     nx.draw_networkx_nodes(G, pos, nodelist=comm2, node_color='red', label='Community 2')
 
     nx.draw_networkx_edges(G, pos, alpha=0.3)
-    nx.draw_networkx_labels(G, pos, font_size=8, font_color="black")
+    # nx.draw_networkx_labels(G, pos, font_size=8, font_color="black")
 
     plt.title("Spectral Community Detection (2 Communities)")
     plt.legend()
