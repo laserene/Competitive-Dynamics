@@ -1,0 +1,4 @@
+Basal cell carcinoma
+\textbf{TCF7L2} 45
+83439 45
+\textbf{LEF1} 45
