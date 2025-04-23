@@ -1,4 +1,0 @@
-Non-small cell lung cancer
-\textbf{E2F3} 25
-6789 25
-1870 25

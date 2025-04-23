@@ -1,4 +1,0 @@
-Gastric cancer
-\textbf{TGFBR1} 65
-7042 64
-\textbf{TGFBR2} 64

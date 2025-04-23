@@ -1,4 +1,0 @@
-Thyroid cancer
-\textbf{KRAS} -4
-\textbf{NRAS} -4
-\textbf{HRAS} -4

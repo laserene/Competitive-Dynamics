@@ -1,4 +1,0 @@
-Endometrial cancer
-\textbf{PIK3CD} 11
-\textbf{PIK3R1} 11
-\textbf{PIK3CA} 11

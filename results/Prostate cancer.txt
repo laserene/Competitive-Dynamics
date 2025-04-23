@@ -1,4 +1,0 @@
-Prostate cancer
-1869 34
-1870 34
-\textbf{E2F3} 34

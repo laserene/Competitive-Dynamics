@@ -1,4 +1,0 @@
-Renal cell carcinoma
-5908 -10
-5906 -10
-\textbf{HGF} -11

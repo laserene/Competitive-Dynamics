@@ -1,4 +1,0 @@
-Glioma
-\textbf{NRAS} -27
-\textbf{HRAS} -27
-\textbf{KRAS} -27

@@ -1,4 +1,0 @@
-Acute myeloid leukemia
-1437 39
-\textbf{IL3} 39
-4353 39
