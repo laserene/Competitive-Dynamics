@@ -3,7 +3,7 @@ import os
 import pandas as pd
 
 
-def main():
+def compare():
     files = os.listdir("./supports")
     db = pd.read_csv("./OncoKB_geneList.csv")[["Hugo Symbol", "Entrez Gene ID"]]
 
@@ -38,7 +38,3 @@ def main():
 
     print(
         f'{verified_genes} over {n_tested_genes} ({round(verified_genes / n_tested_genes * 100, 2)}%) verified by OncoKB.')
-
-
-if __name__ == "__main__":
-    main()
