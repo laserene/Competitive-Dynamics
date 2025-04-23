@@ -1,4 +1,0 @@
-Basal cell carcinoma_supports
-\textbf{TCF7L2} 1
-83439 1
-\textbf{LEF1} 1
