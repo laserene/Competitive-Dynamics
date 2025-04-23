@@ -21,6 +21,7 @@ def pipeline(dataset, network, co_expression):
         np.savetxt(distance_matrix_path, distance_matrix, delimiter=",", fmt='%d')
 
     # States
+    os.makedirs("states", exist_ok=True)
     states_path = f'./states/{dataset}_state.json'
     try:
         states = load_states_from_file(filepath=states_path)
@@ -31,6 +32,7 @@ def pipeline(dataset, network, co_expression):
             json.dump(states, f)
 
     # Supports
+    os.makedirs("supports", exist_ok=True)
     supports_path = f'./supports/{dataset}_supports.csv'
     supports = compute_total_support(network, states, distance_matrix)
     save_dict_as_csv(supports_path, supports)
