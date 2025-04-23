@@ -1,7 +1,7 @@
 .idea/
 __pycache__/
 distance_matrix/
-support/
+supports/
 results/
 states/
 resource/*.tsv
