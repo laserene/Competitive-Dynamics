@@ -25,8 +25,9 @@ def get_max_deg(network):
     return max_deg
 
 
-def compute_distance_matrix(dataset, network):
-    print('IN PROGRESS: Computing distance matrix...')
+def compute_distance_matrix(network, verbose=True):
+    if verbose:
+        print('IN PROGRESS: Computing distance matrix...')
     adjacent_matrix = nx.adjacency_matrix(network)
     distance_matrix = adjacent_matrix.copy().todense().astype(np.uint16)
     distance_matrix[(distance_matrix == 0) & (np.eye(distance_matrix.shape[0]) == 0)] = INF
@@ -40,19 +41,19 @@ def compute_distance_matrix(dataset, network):
     return distance_matrix
 
 
-def load_distance_matrix_from_file(filepath):
-    print("IN PROGRESS: Loading distance matrix...")
+def load_distance_matrix_from_file(filepath, verbose=True):
+    if verbose:
+        print("IN PROGRESS: Loading distance matrix...")
     distance_matrix = np.loadtxt(filepath, delimiter=",", dtype=np.uint16)
     return distance_matrix
 
 
-def load_states_from_file(filepath):
+def load_states_from_file(filepath, verbose=True):
     """
         Load pre-computed states.
-    :param filepath:
-    :return:
     """
-    print("IN PROGRESS: Loading state...")
+    if verbose:
+        print("IN PROGRESS: Loading state...")
     with open(filepath, 'r') as f:
         state = json.load(f)
     return state
@@ -111,8 +112,10 @@ def compete(alpha, network, co_expression, node_set, max_deg):
     return state
 
 
-def outside_competition(network, co_expression, run_full=True, start=0, end=0):
-    print("IN PROGRESS: Competition in progress...")
+def outside_competition(network, co_expression, run_full=True, start=0, end=0, verbose=True):
+    if verbose:
+        print("IN PROGRESS: Competition in progress...")
+
     node_set = list(network.nodes)
     max_deg = get_max_deg(network)
 

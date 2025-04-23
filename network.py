@@ -21,8 +21,10 @@ def load_co_expression(filepath):
     return co_expression
 
 
-def import_network_from_file(filepath, gene_score_path, co_expression_path):
-    print("IN PROGRESS: Loading network...")
+def import_network_from_file(filepath, gene_score_path, co_expression_path, verbose=True):
+    if verbose:
+        print("IN PROGRESS: Loading network...")
+
     with open(filepath, "r") as f:
         data = f.readlines()
 
