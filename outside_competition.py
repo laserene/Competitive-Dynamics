@@ -115,7 +115,6 @@ def compete(alpha, network, co_expression, node_set, max_deg):
 def outside_competition(network, co_expression, run_full=True, start=0, end=0, verbose=True):
     if verbose:
         print("IN PROGRESS: Competition in progress...")
-
     node_set = list(network.nodes)
     max_deg = get_max_deg(network)
 
