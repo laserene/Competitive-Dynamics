@@ -4,10 +4,14 @@ import pandas as pd
 
 
 def main():
-    n_gene = 3
     files = os.listdir("./supports")
     db = pd.read_csv("./OncoKB_geneList.csv")[["Hugo Symbol", "Entrez Gene ID"]]
+
+    n_gene = 3
+    verified_genes = 0
+    n_tested_genes = 0
     for file in files:
+        n_tested_genes += n_gene
         total_supports = pd.read_csv(f"./supports/{file}")
         max_n_supported_genes = total_supports.sort_values(by=total_supports.columns[2], ascending=False)[
                                 :n_gene].iloc[:, 1].values.tolist()
@@ -23,13 +27,16 @@ def main():
                 gene_name = oncokb_gene["Hugo Symbol"].values[0]
                 results.append(
                     f"\\textbf{{{gene_name}}} {total_supports[total_supports.iloc[:, 1] == gene].iloc[:, 2].values.tolist()[0]}\n")
+                verified_genes += 1
 
-        # Write to file
+                # Write to file
         filename = file.split(".")[0].split("_total_support")[0]
         results.insert(0, f"{filename}\n")
         os.makedirs("results", exist_ok=True)
         with open(f"./results/{filename}.txt", "w") as f:
             f.writelines("".join(results))
+
+    print(f'{verified_genes} over {n_tested_genes} ({round(verified_genes / n_tested_genes * 100, 2)}%) verified by OncoKB.')
 
 
 if __name__ == "__main__":
