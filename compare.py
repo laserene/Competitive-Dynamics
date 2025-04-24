@@ -26,7 +26,8 @@ def compare():
             else:
                 gene_name = oncokb_gene["Hugo Symbol"].values[0]
                 results.append(
-                    f"\\textbf{{{gene_name}}} {total_supports[total_supports.iloc[:, 0] == gene].iloc[:, 1].values.tolist()[0]}\n")
+                    f"\\textbf{{{gene_name}}} "
+                    f"{total_supports[total_supports.iloc[:, 0] == gene].iloc[:, 1].values.tolist()[0]}\n")
                 verified_genes += 1
 
                 # Write to file
@@ -37,6 +38,7 @@ def compare():
             f.writelines("".join(results))
 
     print(
-        f'RESULT: {verified_genes} over {n_tested_genes} ({round(verified_genes / n_tested_genes * 100, 2)}%) verified by OncoKB.')
+        f'RESULT: {verified_genes} over {n_tested_genes} ({round(verified_genes / n_tested_genes * 100, 2)}\\%) '
+        f'verified by OncoKB.')
 
     return verified_genes, n_tested_genes
