@@ -66,6 +66,7 @@ def compete(alpha, network, co_expression, node_set, max_deg):
     mul_coeff = 1 / max_deg
 
     state = retrieve_initial_state(network)
+    support = {}
 
     for y in node_set:
         # Initially, set of nodes doesn't contain beta
@@ -103,13 +104,14 @@ def compete(alpha, network, co_expression, node_set, max_deg):
                 converging += np.abs(old_state - state[u])
 
             t += 1
-            if converging > epsilon and t < max_iterations:
+            if not (converging > epsilon and t < max_iterations):
                 break
 
+        support[y] = state[y]
         network.remove_edge(beta, y)
         network.remove_node(beta)
 
-    return state
+    return support
 
 
 def outside_competition(network, co_expression, run_full=True, start=0, end=0, verbose=True):
