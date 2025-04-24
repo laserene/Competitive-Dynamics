@@ -76,4 +76,5 @@ def transform_results_to_latex_table(result_folder, verified_genes, n_tested_gen
     with open(latex_file, 'a') as f:
         f.writelines(table_end_format)
         f.writelines(
-            f'RESULT: {verified_genes} over {n_tested_genes} ({round(verified_genes / n_tested_genes * 100, 2)}%) verified by OncoKB.')
+            f'RESULT: {verified_genes} over {n_tested_genes} ({round(verified_genes / n_tested_genes * 100, 2)}\\%) '
+            f'verified by OncoKB.')
