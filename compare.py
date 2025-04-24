@@ -38,3 +38,5 @@ def compare():
 
     print(
         f'RESULT: {verified_genes} over {n_tested_genes} ({round(verified_genes / n_tested_genes * 100, 2)}%) verified by OncoKB.')
+
+    return verified_genes, n_tested_genes
