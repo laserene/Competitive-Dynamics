@@ -22,21 +22,21 @@ def pipeline(dataset, network, co_expression, verbose=True):
         np.savetxt(distance_matrix_path, distance_matrix, delimiter=",", fmt='%d')
 
     # States
-    os.makedirs("states", exist_ok=True)
-    states_path = f'./states/{dataset}_state.json'
+    os.makedirs("agent_supports", exist_ok=True)
+    agent_supports_path = f'./agent_supports/{dataset}_state.json'
     try:
-        states = load_states_from_file(filepath=states_path, verbose=verbose)
+        agent_supports = load_states_from_file(filepath=agent_supports_path, verbose=verbose)
     except FileNotFoundError as e:
         if verbose:
             print('INFO: States file does not exist!')
-        states = outside_competition(network, co_expression, run_full=True, verbose=verbose)
-        with open(states_path, 'w') as f:
-            json.dump(states, f)
+        agent_supports = outside_competition(network, co_expression, run_full=True, verbose=verbose)
+        with open(agent_supports_path, 'w') as f:
+            json.dump(agent_supports, f)
 
-    # Supports
+    # Supports for all competitors alpha
     os.makedirs("supports", exist_ok=True)
     supports_path = f'./supports/{dataset}_supports.csv'
-    supports = compute_total_support(network, states, distance_matrix, verbose=verbose)
+    supports = compute_total_support(network, agent_supports, distance_matrix, verbose=verbose)
     save_dict_as_csv(supports_path, supports)
 
     return supports

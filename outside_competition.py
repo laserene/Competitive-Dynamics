@@ -126,9 +126,9 @@ def outside_competition(network, co_expression, run_full=True, start=0, end=0, v
         candidates = node_set[start:end]
 
     with ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
-        states = list(tqdm(executor.map(
+        agent_supports = list(tqdm(executor.map(
             partial(compete, network=network, co_expression=co_expression,
                     node_set=node_set, max_deg=max_deg),
             candidates)))
 
-    return states
+    return agent_supports
