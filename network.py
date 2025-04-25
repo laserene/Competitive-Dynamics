@@ -1,6 +1,6 @@
 import json
 
-from networkx import Graph
+from networkx import MultiDiGraph
 
 
 def load_gene_weight_from_file(network, filepath):
@@ -28,9 +28,9 @@ def import_network_from_file(filepath, gene_score_path, co_expression_path, verb
     with open(filepath, "r") as f:
         data = f.readlines()
 
-    network = Graph()
+    network = MultiDiGraph()
     for line in data[1:]:
-        from_node, to_node, _, _ = line.strip().split("\t")
+        from_node, to_node, weight, direction = line.strip().split("\t")
 
         # Filter non-existing gene
         if from_node == '(null)' or to_node == '(null)':
@@ -44,10 +44,10 @@ def import_network_from_file(filepath, gene_score_path, co_expression_path, verb
         network.nodes[node]["score"] = 0.0
 
     # Load gene weight
-    network = load_gene_weight_from_file(network, gene_score_path)
-    co_expression = load_co_expression(co_expression_path)
+    # network = load_gene_weight_from_file(network, gene_score_path)
+    # co_expression = load_co_expression(co_expression_path)
 
-    return network, co_expression
+    return network, 0
 
 
 def is_undirected_graph(filename):

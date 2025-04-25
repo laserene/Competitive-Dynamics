@@ -68,6 +68,9 @@ def compete(alpha, network, co_expression, node_set, max_deg):
     state = retrieve_initial_state(network)
     support = {}
 
+    adjacent_matrix = nx.adjacency_matrix(network)
+    distance_matrix = adjacent_matrix.copy().todense().astype(np.uint16)
+
     for y in node_set:
         # Initially, set of nodes doesn't contain beta
         if y == alpha:
@@ -95,7 +98,7 @@ def compete(alpha, network, co_expression, node_set, max_deg):
                     co_expression_score = min(co_expression.get(f'{u}, {v}', 1), co_expression.get(f'{v}, {u}', 1))
 
                     if v != beta:
-                        s += (1 + co_expression_score) * (state[v] - state[u])
+                        s += adjacent_matrix[network.nodes[u]['id'], network.nodes[v]['id']] * (state[v] - state[u])
                     else:
                         s += state[v] - state[u]
 
@@ -110,6 +113,9 @@ def compete(alpha, network, co_expression, node_set, max_deg):
         support[y] = state[y]
         network.remove_edge(beta, y)
         network.remove_node(beta)
+        state = retrieve_initial_state(network)
+
+    support[alpha] = 1
 
     return support
 
