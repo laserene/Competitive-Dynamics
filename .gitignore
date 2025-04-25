@@ -3,6 +3,6 @@ __pycache__/
 distance_matrix/
 supports/
 results/
-states/
+agent_supports/
 resource/*.tsv
 OncoKB_geneList.csv
