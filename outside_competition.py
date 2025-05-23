@@ -59,7 +59,7 @@ def load_states_from_file(filepath, verbose=True):
     return state
 
 
-def compete(alpha, network, co_expression, node_set, max_deg):
+def compete(alpha, network, node_set, max_deg):
     # Hyperparameters
     epsilon = 2 * 1e-7
     max_iterations = len(node_set) * len(network.edges)
@@ -69,7 +69,7 @@ def compete(alpha, network, co_expression, node_set, max_deg):
     support = {}
 
     adjacent_matrix = nx.adjacency_matrix(network)
-    distance_matrix = adjacent_matrix.copy().todense().astype(np.uint16)
+    # distance_matrix = adjacent_matrix.copy().todense().astype(np.uint16)
 
     for y in node_set:
         # Initially, set of nodes doesn't contain beta
@@ -95,8 +95,6 @@ def compete(alpha, network, co_expression, node_set, max_deg):
 
                 s = 0
                 for v in network.neighbors(u):
-                    co_expression_score = min(co_expression.get(f'{u}, {v}', 1), co_expression.get(f'{v}, {u}', 1))
-
                     if v != beta:
                         s += adjacent_matrix[network.nodes[u]['id'], network.nodes[v]['id']] * (state[v] - state[u])
                     else:
@@ -120,21 +118,15 @@ def compete(alpha, network, co_expression, node_set, max_deg):
     return support
 
 
-def outside_competition(network, co_expression, run_full=True, start=0, end=0, verbose=True):
+def outside_competition(network, driver_set, verbose=True):
     if verbose:
         print("IN PROGRESS: Competition in progress...")
     node_set = list(network.nodes)
     max_deg = get_max_deg(network)
 
-    if run_full:
-        candidates = node_set
-    else:
-        candidates = node_set[start:end]
-
     with ProcessPoolExecutor(max_workers=os.cpu_count()) as executor:
         agent_supports = list(tqdm(executor.map(
-            partial(compete, network=network, co_expression=co_expression,
-                    node_set=node_set, max_deg=max_deg),
-            candidates)))
+            partial(compete, network=network, node_set=node_set, max_deg=max_deg),
+            driver_set)))
 
     return agent_supports

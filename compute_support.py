@@ -17,7 +17,7 @@ def compute_influence_matrix(network, state, distance_matrix):
     return influence_matrix
 
 
-def compute_total_support(network, states, distance_matrix, verbose=True):
+def compute_total_support(network, states, driver_set, verbose=True):
     def sign(value):
         if value > 0:
             return 1
@@ -29,12 +29,13 @@ def compute_total_support(network, states, distance_matrix, verbose=True):
     if verbose:
         print('IN PROGRESS: Computing supports...')
 
-    node_set = list(network.nodes)
+    node_set = set(network.nodes)
+    driver_set = list(driver_set)
     supports = {}
     for i in tqdm(range(len(states))):
-        alpha = node_set[i]
+        alpha = driver_set[i]
         state = states[i]
-        influence_matrix = compute_influence_matrix(network, state, distance_matrix)
+        # influence_matrix = compute_influence_matrix(network, state, distance_matrix)
 
         alpha_id = network.nodes[alpha]['id']
         support = 0
@@ -43,7 +44,7 @@ def compute_total_support(network, states, distance_matrix, verbose=True):
                 continue
 
             node_id = network.nodes[node]['id']
-            support += sign(influence_matrix[alpha_id][node_id] - state[node])
+            # support += sign(influence_matrix[alpha_id][node_id] - state[node])
 
         supports[alpha] = support
 
